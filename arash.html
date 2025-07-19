@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Location Sender</title>
+</head>
+<body>
+  <h2>در حال دریافت و ارسال موقعیت مکانی شما...</h2>
+
+  <script>
+    // گرفتن موقعیت کاربر
+    navigator.geolocation.getCurrentPosition(function(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      // ارسال اطلاعات به Google Form
+      fetch("https://docs.google.com/forms/d/e/1FAIpQLScDW6N-rkW-8uEywYmmMW6teaVZB22856Jo5e8-UuDsk9szQg/formResponse", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+          "entry.524482813": lat,
+          "entry.489892122": lon
+        })
+      });
+
+      document.body.innerHTML += <p>📍 مختصات شما با موفقیت ارسال شد.</p>;
+    }, function(error) {
+      document.body.innerHTML += <p style="color: red;">❌ دسترسی به موقعیت مکانی رد شد.</p>;
+    });
+  </script>
+</body>
+</html>
